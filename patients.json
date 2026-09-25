@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Ali",
+    "age": 22,
+    "gender": "Male",
+    "height": 175,
+    "bmi": 22.9,
+    "city": "Rawalpindi",
+    "weight": 70,
+    "verdict": "Normal"
+  },
+  {
+    "name": "Ahmed",
+    "age": 28,
+    "gender": "Male",
+    "height": 180,
+    "bmi": 27.8,
+    "city": "Lahore",
+    "weight": 90,
+    "verdict": "Overweight"
+  },
+  {
+    "name": "Sara",
+    "age": 25,
+    "gender": "Female",
+    "height": 165,
+    "bmi": 20.2,
+    "city": "Islamabad",
+    "weight": 55,
+    "verdict": "Normal"
+  },
+  {
+    "name": "Usman",
+    "age": 31,
+    "gender": "Male",
+    "height": 170,
+    "bmi": 31.1,
+    "city": "Karachi",
+    "weight": 90,
+    "verdict": "Obese"
+  },
+  {
+    "name": "Ayesha",
+    "age": 21,
+    "gender": "Female",
+    "height": 160,
+    "bmi": 17.6,
+    "city": "Multan",
+    "weight": 45,
+    "verdict": "Underweight"
+  }
+]
