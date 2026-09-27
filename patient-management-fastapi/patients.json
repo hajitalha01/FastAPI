@@ -1,0 +1,57 @@
+[
+    {
+        "patient_id": "p001",
+        "name": "Ali",
+        "age": 22,
+        "gender": "Male",
+        "height": 175,
+        "bmi": 22.9,
+        "city": "Rawalpindi",
+        "weight": 70,
+        "verdict": "Normal"
+    },
+    {
+        "patient_id": "p002",
+        "name": "Ahmed",
+        "age": 28,
+        "gender": "Male",
+        "height": 180,
+        "bmi": 27.8,
+        "city": "Lahore",
+        "weight": 90,
+        "verdict": "Overweight"
+    },
+    {
+        "patient_id": "p003",
+        "name": "Sara",
+        "age": 25,
+        "gender": "Female",
+        "height": 165,
+        "bmi": 20.2,
+        "city": "Islamabad",
+        "weight": 55,
+        "verdict": "Normal"
+    },
+    {
+        "patient_id": "p004",
+        "name": "Usman",
+        "age": 31,
+        "gender": "Male",
+        "height": 170,
+        "bmi": 31.1,
+        "city": "Karachi",
+        "weight": 90,
+        "verdict": "Obese"
+    },
+    {
+        "name": "TAlha",
+        "city": "Layyah",
+        "age": 56,
+        "gender": "male",
+        "height": 1.0,
+        "weight": 1.0,
+        "bmi": 1.0,
+        "verdict": "underweight",
+        "patient_id": "p008"
+    }
+]

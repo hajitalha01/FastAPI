@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Path, HTTPException, Query
 from pydantic import BaseModel, Field, computed_field
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional
 import json
 
 app = FastAPI()
@@ -50,8 +50,7 @@ class Patient(BaseModel):
     @computed_field
     @property
     def bmi(self) -> float:
-        bmi = round(self.weight / (self.height ** 2), 2)
-        return bmi
+        return round(self.weight / (self.height ** 2), 2)
 
     @computed_field
     @property
@@ -68,6 +67,43 @@ class Patient(BaseModel):
 
         else:
             return "obese"
+
+
+# =========================
+# Pydantic Update Patient Model
+# =========================
+
+class PatientUpdate(BaseModel):
+
+    name: Annotated[
+        Optional[str],
+        Field(default=None)
+    ]
+
+    city: Annotated[
+        Optional[str],
+        Field(default=None)
+    ]
+
+    age: Annotated[
+        Optional[int],
+        Field(default=None, gt=0, lt=120)
+    ]
+
+    gender: Annotated[
+        Optional[Literal["male", "female", "other"]],
+        Field(default=None)
+    ]
+
+    height: Annotated[
+        Optional[float],
+        Field(default=None, gt=0)
+    ]
+
+    weight: Annotated[
+        Optional[float],
+        Field(default=None, gt=0)
+    ]
 
 
 # =========================
@@ -98,6 +134,7 @@ def save_data(data):
 
 @app.get("/")
 def home():
+
     return {
         "message": "Patient Management API"
     }
@@ -109,6 +146,7 @@ def home():
 
 @app.get("/about")
 def about():
+
     return {
         "message": "This API manages patient records"
     }
@@ -227,10 +265,103 @@ def create_patient(patient: Patient):
     # New patient add karna
     data.append(new_patient)
 
-    # Data save karna
+    # Save data
     save_data(data)
 
     return {
         "message": "Patient created successfully",
         "patient": new_patient
     }
+
+
+# =========================
+# Update Patient
+# =========================
+
+@app.put("/edit/{patient_id}")
+def update_patient(
+    patient_id: str,
+    patient_update: PatientUpdate
+):
+
+    data = load_data()
+
+    # Find patient
+    for patient in data:
+
+        if patient["patient_id"] == patient_id:
+
+            # Sirf woh fields update hongi
+            # jo request mein di gayi hain
+            update_data = patient_update.model_dump(
+                exclude_unset=True
+            )
+
+            # Update fields
+            for key, value in update_data.items():
+
+                if value is not None:
+                    patient[key] = value
+
+            # BMI dobara calculate karna
+            patient["bmi"] = round(
+                patient["weight"] / (patient["height"] ** 2),
+                2
+            )
+
+            # Verdict dobara calculate karna
+            if patient["bmi"] < 18.5:
+                patient["verdict"] = "underweight"
+
+            elif patient["bmi"] < 25:
+                patient["verdict"] = "normal"
+
+            elif patient["bmi"] < 30:
+                patient["verdict"] = "overweight"
+
+            else:
+                patient["verdict"] = "obese"
+
+            # Save updated data
+            save_data(data)
+
+            return {
+                "message": "Patient updated successfully",
+                "patient": patient
+            }
+
+    # Patient nahi mila
+    raise HTTPException(
+        status_code=404,
+        detail="Patient not found"
+    )
+# =========================
+# Delete Patient
+# =========================
+
+@app.delete("/delete/{patient_id}")
+def delete_patient(patient_id: str):
+
+    data = load_data()
+
+    # Patient find karo
+    for index, patient in enumerate(data):
+
+        if patient["patient_id"] == patient_id:
+
+            # Patient ko list se remove karo
+            deleted_patient = data.pop(index)
+
+            # Updated data save karo
+            save_data(data)
+
+            return {
+                "message": "Patient deleted successfully",
+                "patient": deleted_patient
+            }
+
+    # Patient nahi mila
+    raise HTTPException(
+        status_code=404,
+        detail="Patient not found"
+    )
